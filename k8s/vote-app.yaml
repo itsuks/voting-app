@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: result-app-pod
+  name: vote-app-pod
   labels:
-    app: result-app
+    name: vote-app
     type: front-end
 spec:
   containers:
-    - name: result-app-ontainer
-      image: result-app
+    - name: vote-app-container
+      image: vote-app
       imagePullPolicy: Never
