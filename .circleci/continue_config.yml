@@ -1,0 +1,120 @@
+version: 2.1
+
+parameters:
+  vote_changed:
+    type: boolean
+    default: false
+
+  result_changed:
+    type: boolean
+    default: false
+
+  worker_changed:
+    type: boolean
+    default: false
+
+jobs:
+
+  build-vote:
+    docker:
+      - image: cimg/base:2024.02
+
+    steps:
+      - checkout
+
+      - setup_remote_docker
+
+      - run:
+          name: Docker Login
+          command: |
+            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+      - run:
+          name: Build Vote App
+          command: |
+            docker build -t $DOCKER_USERNAME/vote-app:latest ./vote
+
+      - run:
+          name: Push Vote App
+          command: |
+            docker push $DOCKER_USERNAME/vote-app:latest
+
+  build-result:
+    docker:
+      - image: cimg/base:2024.02
+
+    steps:
+      - checkout
+
+      - setup_remote_docker
+
+      - run:
+          name: Docker Login
+          command: |
+            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+      - run:
+          name: Build Result App
+          command: |
+            docker build -t $DOCKER_USERNAME/result-app:latest ./result
+
+      - run:
+          name: Push Result App
+          command: |
+            docker push $DOCKER_USERNAME/result-app:latest
+
+  build-worker:
+    docker:
+      - image: cimg/base:2024.02
+
+    steps:
+      - checkout
+
+      - setup_remote_docker
+
+      - run:
+          name: Docker Login
+          command: |
+            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+      - run:
+          name: Build Worker App
+          command: |
+            docker build -t $DOCKER_USERNAME/worker-app:latest ./worker
+
+      - run:
+          name: Push Worker App
+          command: |
+            docker push $DOCKER_USERNAME/worker-app:latest
+
+workflows:
+
+  vote-workflow:
+    when: << pipeline.parameters.vote_changed >>
+
+    jobs:
+      - build-vote:
+          filters:
+            branches:
+              only:
+                - main
+
+  result-workflow:
+    when: << pipeline.parameters.result_changed >>
+
+    jobs:
+      - build-result:
+          filters:
+            branches:
+              only:
+                - main
+
+  worker-workflow:
+    when: << pipeline.parameters.worker_changed >>
+
+    jobs:
+      - build-worker:
+          filters:
+            branches:
+              only:
+                - main
