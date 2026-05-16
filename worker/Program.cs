@@ -152,5 +152,3 @@ namespace Worker
         }
     }
 }
-
-// This for tsing pipeline.
