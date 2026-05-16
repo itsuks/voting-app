@@ -1,0 +1,26 @@
+version: 2.1
+
+setup: true
+
+orbs:
+  path-filtering: circleci/path-filtering@3.0.0
+
+workflows:
+  detect-changes:
+    jobs:
+      - path-filtering/filter:
+          name: detect-changed-services
+
+          filters:
+            branches:
+              only:
+                - main
+
+          base-revision: main
+
+          config-path: .circleci/continue_config.yml
+
+          mapping: |
+            vote/.* vote_changed true
+            result/.* result_changed true
+            worker/.* worker_changed true
