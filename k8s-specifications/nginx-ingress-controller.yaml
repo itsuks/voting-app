@@ -7,7 +7,8 @@ metadata:
 spec:
   template:
     metadata:
-      app: nginx-ingress
+      labels:
+        app: nginx-ingress
     spec:
       containers:
         - name: nginx-ingress-controller
@@ -19,7 +20,7 @@ spec:
           ports:
             - containerPort: 80
             - containerPort: 443
-    replicas: 1
-    selector:
+  replicas: 1
+  selector:
      matchLabels: 
        app: nginx-ingress
