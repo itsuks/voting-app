@@ -14,9 +14,9 @@ spec:
       - name: nginx-ingress-controller
         image: registry.k8s.io/ingress-nginx/controller
 
-      args:
-        - /nginx-ingress-controller
+        args:
+          - /nginx-ingress-controller
       
-      ports:
-        - containerPort: 80
-        - containerPort: 443
+        ports:
+          - containerPort: 80
+          - containerPort: 443
