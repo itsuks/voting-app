@@ -8,22 +8,18 @@ spec:
   template:
     metadata:
       app: nginx-ingress
+    spec:
+      containers:
+        - name: nginx-ingress-controller
+          image: registry.k8s.io/ingress-nginx/controller
 
-  spec:
-    containers:
-      - name: nginx-ingress-controller
-        image: registry.k8s.io/ingress-nginx/controller
-
-        args:
-          - /nginx-ingress-controller
+          args:
+            - /nginx-ingress-controller
       
-        ports:
-          - containerPort: 80
-          - containerPort: 443
-
-  replicas: 1
-
-  selector:
-    matchLables: 
-      app: nginx-ingress
-
+          ports:
+            - containerPort: 80
+            - containerPort: 443
+    replicas: 1
+    selector:
+     matchLabels: 
+       app: nginx-ingress
