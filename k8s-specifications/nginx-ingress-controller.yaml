@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-ingress-controller
+  namespace: ingress-nginx
+
+spec:
+  template:
+    metadata:
+      app: nginx-ingress
+
+  spec:
+    containers:
+      - name: nginx-ingress-controller
+        image: registry.k8s.io/ingress-nginx/controller
+
+      args:
+        - /nginx-ingress-controller
+      
+      ports:
+        - containerPort: 80
+        - containerPort: 443
